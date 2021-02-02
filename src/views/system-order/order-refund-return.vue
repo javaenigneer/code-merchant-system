@@ -44,7 +44,6 @@
           border
           highlight-current-row
           align="center"
-
         >
           <el-table-column fixed label="订单售后编号" prop="orderReturnId" align="center"></el-table-column>
           <el-table-column label="原订单编号" prop="orderId" align="center"></el-table-column>

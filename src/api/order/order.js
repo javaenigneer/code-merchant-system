@@ -58,3 +58,10 @@ export function receiveProcess(orderReturnId) {
     params: {orderReturnId}
   });
 }
+
+export function exportOrder() {
+  return request({
+    url: '/codeworld-order/export-order',
+    method: 'post'
+  });
+}

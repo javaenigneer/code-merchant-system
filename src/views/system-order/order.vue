@@ -33,6 +33,7 @@
           :picker-options="pickerOptions">
         </el-date-picker>
         <el-button type="primary" @click="getList" icon="el-icon-search">查询</el-button>
+        <el-button type="primary" @click="exportOrder" icon="el-icon-download">导出数据</el-button>
       </cus-filter-wraper>
       <div class="table-container">
         <el-table
@@ -171,7 +172,8 @@
   import {
     getSystemPageOrder,
     getReceiverAddressById,
-    orderDelivery
+    orderDelivery,
+    exportOrder
   } from '@/api/order/order'
 
   export default {
@@ -299,6 +301,10 @@
             this.submitFail(response.msg)
           }
         })
+      },
+      exportOrder(){
+        exportOrder().then((response => {
+        }))
       },
       handleClose(done) {
         this.$confirm('确认关闭？')
