@@ -49,3 +49,12 @@ export function getOrderReturnInfo(orderReturnId) {
     params: {orderReturnId}
   });
 }
+
+
+export function receiveProcess(orderReturnId) {
+  return request({
+    url: '/codeworld-order/receive-processing-service-order',
+    method: 'post',
+    params: {orderReturnId}
+  });
+}

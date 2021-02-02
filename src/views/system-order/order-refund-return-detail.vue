@@ -58,14 +58,14 @@
           </el-form-item>
           <el-form-item>
             <div>
-              <el-input disabled  v-model="serviceOrder.orderReturnStatus" style="width: 600px">
+              <el-input disabled v-model="serviceOrder.orderReturnStatus" style="width: 600px">
                 <template slot="prepend">申请状态</template>
               </el-input>
             </div>
           </el-form-item>
 
           <el-form-item>
-            <div >
+            <div>
               <el-input disabled v-model="serviceOrder.orderId" style="width: 600px">
                 <template slot="prepend">原订单编号</template>
               </el-input>
@@ -73,7 +73,7 @@
           </el-form-item>
 
           <el-form-item>
-            <div >
+            <div>
               <el-input disabled v-model="serviceOrder.orderReturnApplyTime" style="width: 600px">
                 <template slot="prepend">申请时间</template>
               </el-input>
@@ -81,14 +81,14 @@
           </el-form-item>
 
           <el-form-item>
-            <div >
+            <div>
               <el-input disabled v-model="serviceOrder.buyerName" style="width: 600px">
                 <template slot="prepend">买家名称</template>
               </el-input>
             </div>
           </el-form-item>
           <el-form-item>
-            <div >
+            <div>
               <el-input disabled v-model="serviceOrder.receiverName" style="width: 600px">
                 <template slot="prepend">收货人</template>
               </el-input>
@@ -96,14 +96,14 @@
           </el-form-item>
 
           <el-form-item>
-            <div >
+            <div>
               <el-input disabled v-model="serviceOrder.receiverPhone" style="width: 600px">
                 <template slot="prepend">收货人手机号</template>
               </el-input>
             </div>
           </el-form-item>
           <el-form-item>
-            <div >
+            <div>
               <el-input disabled v-model="serviceOrder.receiverAddress" style="width: 600px">
                 <template slot="prepend">收货人地址</template>
               </el-input>
@@ -122,7 +122,7 @@
           <el-input type="textarea" v-model="input1"></el-input>
         </el-form-item>
         <el-form-item style="margin-left: 500px">
-          <el-button type="primary" @click="submitForm('ruleForm')">确认</el-button>
+          <el-button type="primary" @click="receiveProcess()">确认</el-button>
           <el-button @click="resetForm('ruleForm')">拒绝</el-button>
         </el-form-item>
       </el-form>
@@ -132,7 +132,8 @@
 
 <script>
   import {
-    getOrderReturnInfo
+    getOrderReturnInfo,
+    receiveProcess
   } from '@/api/order/order'
 
   export default {
@@ -168,7 +169,7 @@
         orderStatus: '',
         input1: '',
         input2: '',
-        serviceOrder:{
+        serviceOrder: {
           orderReturnId: '',
           orderReturnStatus: '',
           orderId: '',
@@ -203,21 +204,7 @@
           }
         })
       },
-      checkOrderStatus(orderStatus) {
-        switch (orderStatus) {
-          case 1:
-            return '未支付'
-          case 2:
-            return '已支付，未发货'
-          case 3:
-            return '已发货'
-          case 4:
-            return '已完成'
-          case 5:
-            return '已关闭'
-        }
-      },
-      getOrderReturnStatus(orderReturnStatus){
+      getOrderReturnStatus(orderReturnStatus) {
         switch (orderReturnStatus) {
           case 0:
             return '未处理'
@@ -232,6 +219,15 @@
           case 5:
             return '拒绝退货'
         }
+      },
+      receiveProcess() {
+        receiveProcess(this.serviceOrder.orderReturnId).then((response => {
+          if (response.code === 20000) {
+            this.submitOk(response.msg)
+          } else {
+            this.submitFail(response.msg)
+          }
+        }))
       }
     }
   }

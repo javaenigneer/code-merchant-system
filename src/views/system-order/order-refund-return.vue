@@ -52,6 +52,7 @@
           <el-table-column label="订单金额" prop="totalPay" align="center"></el-table-column>
           <el-table-column label="订单创建时间" prop="createTime" align="center"></el-table-column>
           <el-table-column label="订单售后申请时间" prop="orderReturnApplyTime" align="center"></el-table-column>
+          <el-table-column label="订单售后受理时间" prop="orderReturnHandleTime" align="center"></el-table-column>
           <el-table-column label="服务订单类型" prop="orderReturnType" align="center">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.orderReturnType == 1"
