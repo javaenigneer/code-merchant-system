@@ -59,6 +59,14 @@ export function receiveProcess(orderReturnId) {
   });
 }
 
+export function refuseProcess(orderReturnId) {
+  return request({
+    url: '/codeworld-order/refuse-process-service-order',
+    method: 'post',
+    params: {orderReturnId}
+  });
+}
+
 export function exportOrder() {
   return request({
     url: '/codeworld-order/export-order',

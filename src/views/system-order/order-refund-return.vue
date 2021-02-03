@@ -96,6 +96,11 @@
               <el-tag v-if="scope.row.orderReturnStatus == 5"
                       type="warning"
                       hit
+              >拒绝退款
+              </el-tag>
+              <el-tag v-if="scope.row.orderReturnStatus == 6"
+                      type="warning"
+                      hit
               >拒绝退货
               </el-tag>
             </template>
