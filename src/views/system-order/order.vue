@@ -129,7 +129,7 @@
           class="demo-ruleForm"
         >
           <el-form-item label="订单编号:">
-            <el-input v-model="orderDeliveryList.orderId" :disabled="active"></el-input>
+            <el-input v-model="orderDeliveryList.orderDetailId" :disabled="active"></el-input>
           </el-form-item>
           <el-form-item label="收货人:">
             <el-input v-model="orderDeliveryList.receiverName" :disabled="active"></el-input>
@@ -243,7 +243,7 @@
           create: '创建'
         },
         orderDeliveryList: {
-          orderId: undefined,
+          orderDetailId: undefined,
           receiverName: undefined,
           receiverPhone: undefined,
           receiverAddress: undefined,
@@ -277,7 +277,7 @@
         // 根据地址id查询地址信息
         getReceiverAddressById(row.addressId).then((response) => {
           if (response.code === 20000) {
-            this.orderDeliveryList.orderId = row.orderId
+            this.orderDeliveryList.orderDetailId = row.orderDetailId
             this.orderDeliveryList.receiverName = response.data.name
             this.orderDeliveryList.receiverPhone = response.data.phone
             this.orderDeliveryList.receiverAddress = response.data.area + response.data.detailed + response.data.houseNumber
@@ -290,7 +290,7 @@
       // 订单发货
       orderDelivery() {
         let orderDeliveryMessage = {}
-        orderDeliveryMessage.orderId = this.orderDeliveryList.orderId
+        orderDeliveryMessage.orderDetailId = this.orderDeliveryList.orderDetailId
         orderDeliveryMessage.logisticsCompany = this.orderDeliveryList.logisticsCompany
         orderDelivery(orderDeliveryMessage).then((response) => {
           if (response.code === 20000){
