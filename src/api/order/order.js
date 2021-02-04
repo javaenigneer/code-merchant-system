@@ -35,7 +35,7 @@ export function orderDelivery(orderDeliveryMessage) {
 // 获取商户下订单退款退货列表
 export function getPageMerchantOrderReturn(query) {
   return request({
-    url: '/codeworld-order/get-page-merchant-order-return',
+    url: '/codeworld-order/web/get-page-merchant-order-return',
     method: 'post',
     data: query
   });
@@ -44,7 +44,7 @@ export function getPageMerchantOrderReturn(query) {
 // 获取退款退货商品详情
 export function getOrderReturnInfo(orderReturnId) {
   return request({
-    url: '/codeworld-order/get-order-return-info',
+    url: '/codeworld-order/web/get-order-return-info',
     method: 'post',
     params: {orderReturnId}
   });
