@@ -8,11 +8,11 @@ export function getWebPageMerchantOrder(query) {
   });
 }
 
-export function getOrderInfoById(orderId) {
+export function getOrderInfoById(orderDetailId) {
   return request({
     url: '/codeworld-order/get-order-info-id',
     method: 'post',
-    params: {orderId}
+    params: {orderDetailId}
   });
 }
 

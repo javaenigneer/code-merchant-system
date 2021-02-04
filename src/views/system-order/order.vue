@@ -270,7 +270,7 @@
         }
       },
       viewOrder(row) {
-        this.$router.push({ path: '/systemOrder/order-detail', query: { orderId: row.orderId } })
+        this.$router.push({ path: '/systemOrder/order-detail', query: { orderDetailId: row.orderDetailId } })
       },
       // 订单发货列表
       orderDeliveryPage(row) {

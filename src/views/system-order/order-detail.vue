@@ -16,7 +16,7 @@
           :data="orderBasic"
           style="width: 100%">
           <el-table-column
-            prop="orderId"
+            prop="orderDetailId"
             label="订单编号"
             width="180">
           </el-table-column>
@@ -192,12 +192,12 @@
     methods: {
       getOrderInfoById() {
         // this.listLoading = true
-        getOrderInfoById(this.$route.query.orderId).then((response) => {
+        getOrderInfoById(this.$route.query.orderDetailId).then((response) => {
           if (response.code === 20000) {
             let orderDetail = response.data
             this.orderStatus = orderDetail.orderStatus
             let orderBasicParam = {}
-            orderBasicParam.orderId = orderDetail.orderId
+            orderBasicParam.orderDetailId = orderDetail.orderDetailId
             orderBasicParam.buyerName = orderDetail.buyerName
             orderBasicParam.orderStatus = this.checkOrderStatus(orderDetail.orderStatus)
             orderBasicParam.orderDeliveryCompany = orderDetail.orderDeliveryCompany
