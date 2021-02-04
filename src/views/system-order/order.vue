@@ -47,7 +47,7 @@
           align="center"
 
         >
-          <el-table-column fixed label="订单编号" prop="orderId" align="center"></el-table-column>
+          <el-table-column fixed label="订单编号" prop="orderDetailId" align="center"></el-table-column>
           <el-table-column label="提交时间" prop="createTime" align="center"></el-table-column>
           <el-table-column label="会员名称" prop="buyerName" align="center"></el-table-column>
           <el-table-column label="订单金额" prop="totalPay" align="center"></el-table-column>
