@@ -1,8 +1,8 @@
 import request from '@/utils/request';
 
-export function getSystemPageOrder(query) {
+export function getWebPageMerchantOrder(query) {
   return request({
-    url: '/codeworld-order/get-system-page-order',
+    url: '/codeworld-order/web/get-page-merchant-order',
     method: 'post',
     data: query
   });

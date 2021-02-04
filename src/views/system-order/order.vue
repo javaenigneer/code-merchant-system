@@ -75,7 +75,7 @@
               <el-tag v-if="scope.row.orderStatus == 8"
                       type="info"
                       hit
-              >申请售后中
+              >申请售后
               </el-tag>
             </template>
           </el-table-column>
@@ -170,7 +170,7 @@
 
 <script>
   import {
-    getSystemPageOrder,
+    getWebPageMerchantOrder,
     getReceiverAddressById,
     orderDelivery,
     exportOrder
@@ -257,7 +257,7 @@
     methods: {
       getList() {
         this.listLoading = true
-        getSystemPageOrder(this.listQuery).then((response) => {
+        getWebPageMerchantOrder(this.listQuery).then((response) => {
           this.list = response.data.data
           this.total = response.data.total
           this.listLoading = false
