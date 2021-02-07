@@ -53,7 +53,7 @@ export function getOrderReturnInfo(orderReturnId) {
 
 export function receiveProcess(orderReturnId) {
   return request({
-    url: '/codeworld-order/receive-processing-service-order',
+    url: '/codeworld-order/web/receive-processing-service-order',
     method: 'post',
     params: {orderReturnId}
   });
@@ -61,7 +61,7 @@ export function receiveProcess(orderReturnId) {
 
 export function refuseProcess(orderReturnId) {
   return request({
-    url: '/codeworld-order/refuse-process-service-order',
+    url: '/codeworld-order/web/refuse-process-service-order',
     method: 'post',
     params: {orderReturnId}
   });
@@ -69,7 +69,7 @@ export function refuseProcess(orderReturnId) {
 
 export function exportOrder() {
   return request({
-    url: '/codeworld-order/export-order',
+    url: '/codeworld-order/web/export-order',
     method: 'post'
   });
 }

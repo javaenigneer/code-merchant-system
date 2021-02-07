@@ -22,3 +22,10 @@ export function judgmentMerchantSet() {
     method: 'get'
   })
 }
+
+export function getMerchantDashBoardData() {
+  return request({
+    url: '/codeworld-order/web/get-merchant-dashboard-data',
+    method: 'post'
+  })
+}
