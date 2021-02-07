@@ -1,84 +1,71 @@
 <template>
-  <div class="dashboard-editor-container" style="padding: 20px;background: #f2f2f2;">
-
-    <el-row :gutter="24">
-      <el-col :span="12">
-        <el-card class="box-card" style="height: 300px">
-          <div slot="header" class="clearfix">
-            <span>登陆用户</span>
-          </div>
-          <div style="width: 160px;display: inline-block;float: left">
-            <pan-thumb :image="avatar" style="float: left">
-              Your roles:
-              <span v-for="item in roles" :key="item" class="pan-info-roles">{{ item }}</span>
-            </pan-thumb>
-          </div>
-          <div style="display: inline-block;float: left;margin-left: 20px;margin-top: 20px">
-            <table>
-              <tr class="userinfo-row">
-                <td class="userinfo-lable">
-                  角色
-                </td>
-                <td class="userinfo-content">
-                  <span v-for="item in roles" :key="item" style="display: inline-block;margin-right: 5px">{{ item
-                    }}</span>
-                </td>
-              </tr>
-              <tr class="userinfo-row">
-                <td class="userinfo-lable">
-                  账号
-                </td>
-                <td class="userinfo-content">
-                  {{ name }}
-                </td>
-              </tr>
-              <tr class="userinfo-row">
-                <td class="userinfo-lable">
-                  昵称
-                </td>
-                <td class="userinfo-content">
-                  {{ introduction }}
-                </td>
-              </tr>
-            </table>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-
-    <el-button  type="primary" @click="handleUpdate()" icon="el-icon-edit" plain>
-      修改个人信息
-    </el-button>
-
-    <!-- 修改个人信息 -->
-    <el-dialog :title="titleMap[dialogStatus]" :visible.sync="dialogVisible" width="40%" @close="handleDialogClose">
-      <el-form ref="dataForm" :model="form" label-width="80px" class="demo-ruleForm">
-        <el-form-item label="账号:" prop="username">
-          <el-input v-model="form.username"></el-input>
+  <div>
+    <el-card class="box-card" style="float:left; margin-left: 40px">
+      <div slot="header" class="clearfix">
+        <span>基本信息</span>
+        <el-button style="float: right; padding: 3px 0" type="text">修改信息</el-button>
+      </div>
+      <el-form ref="form" label-width="100px">
+        <el-form-item label="商户号">
+          <el-input v-model="merchantInfo.number" disabled></el-input>
         </el-form-item>
-        <el-form-item label="登录密码:" prop="pwd">
-          <el-input v-model="form.pwd"></el-input>
+        <el-form-item label="商户昵称">
+          <el-input v-model="merchantInfo.nickName" disabled></el-input>
         </el-form-item>
-        <el-form-item label="昵称:" prop="nickName">
-          <el-input v-model="form.nickName"></el-input>
+        <el-form-item label="手机号">
+          <el-input v-model="merchantInfo.phone" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="创建时间">
+          <el-input v-model="merchantInfo.createTime" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="商户跟进人">
+          <el-input v-model="merchantInfo.merchantFollower" disabled></el-input>
         </el-form-item>
       </el-form>
-      <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false"> {{ $t('table.cancel') }} </el-button>
-          <el-button type="primary" @click="submitForm"> {{ $t('table.confirm') }} </el-button>
-        </span>
-    </el-dialog>
-
+    </el-card>
+    <el-card class="box-card" style="float:left; margin-left: 40px">
+      <div slot="header" class="clearfix">
+        <span>入驻信息</span>
+        <el-button style="float: right; padding: 3px 0" type="text">修改信息</el-button>
+      </div>
+      <el-form ref="form" label-width="100px">
+        <el-form-item label="商户名称">
+          <el-input v-model="merchantInfo.merchantName" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="身份证正面">
+          <div class="block">
+            <el-image :src="merchantInfo.idCardFront" fit="cover" style="width: 100px;height: 100px"></el-image>
+          </div>
+        </el-form-item>
+        <el-form-item label="身份证背面">
+          <div class="block">
+            <el-image :src="merchantInfo.idCardBack" fit="cover" style="width: 100px;height: 100px">
+            </el-image>
+          </div>
+        </el-form-item>
+        <el-form-item label="营业执照">
+          <div class="block">
+            <el-image :src="merchantInfo.license" fit="cover" style="width: 100px;height: 100px">
+            </el-image>
+          </div>
+        </el-form-item>
+        <el-form-item label="入驻时间">
+          <el-input v-model="merchantInfo.setCreateTime" disabled></el-input>
+        </el-form-item>
+      </el-form>
+    </el-card>
   </div>
 </template>
 
 <script>
 
-  import { getServerInfo } from '@/api/dashboard'
+  import { getMerchantInfo } from '@/api/dashboard'
   import TransactionTable from '../admin/components/TransactionTable'
   import { mapGetters } from 'vuex'
   import PanThumb from '@/components/PanThumb'
   import { updatePersonalInfo } from '@/api/system/user'
+  import { getUserInfo } from '@/api/login'
+  import { getToken } from '../../../utils/auth'
 
   export default {
     name: 'DashboardEditor',
@@ -98,11 +85,32 @@
           update: '修改个人信息',
           create: '创建'
         },
+        merchantInfo: {
+          number: '',
+          nickName: '',
+          phone: '',
+          createTime: '',
+          merchantName: '',
+          idCardFront: '',
+          idCardBack: '',
+          license: '',
+          setCreateTime: '',
+          merchantFollower: ''
+        }
       }
     },
     created() {
+      this.getMerchantInfo()
     },
     methods: {
+      getMerchantInfo() {
+        getMerchantInfo().then(response => {
+          if (response.code === 20000) {
+            let result = response.data
+            this.merchantInfo = result
+          }
+        })
+      },
       handleUpdate(row) {
         this.form = Object.assign({}, row)
         this.form.id = this.id
@@ -199,6 +207,28 @@
         top: 25px;
       }
     }
+  }
+
+  .text {
+    font-size: 14px;
+  }
+
+  .item {
+    margin-bottom: 18px;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+
+  .clearfix:after {
+    clear: both
+  }
+
+  .box-card {
+    width: 480px;
   }
 
 </style>

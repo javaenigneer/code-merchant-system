@@ -29,3 +29,10 @@ export function getMerchantDashBoardData() {
     method: 'post'
   })
 }
+
+export function getMerchantInfo() {
+  return request({
+    url: '/codeworld-merchant/web/get-merchant-info',
+    method: 'post'
+  })
+}
