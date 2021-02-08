@@ -36,3 +36,11 @@ export function getMerchantInfo() {
     method: 'post'
   })
 }
+
+export function getUserRoleToMerchant(userName) {
+  return request({
+    url: '/codeworld-system/user/get-user-role-to-merchant',
+    method: 'get',
+    params: {userName}
+  })
+}
