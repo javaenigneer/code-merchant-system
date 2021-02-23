@@ -153,12 +153,7 @@
 <script>
   import {
     getPageMerchant,
-    examineMerchant,
-    deleteSysUser,
-    updateSysUser,
-    updateUserStatus,
-    getAllListNoParam,
-    getDeptIdByUserId
+    examineMerchant
   } from '@/api/merchant/merchant'
   import { treeDept } from '@/api/system/dept'
 

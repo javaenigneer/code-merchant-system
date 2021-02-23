@@ -68,7 +68,7 @@
               >已发货
               </el-tag>
               <el-tag v-if="scope.row.orderStatus == 4"
-                      type="info"
+                      type="success"
                       hit
               >已完成
               </el-tag>
@@ -76,6 +76,16 @@
                       type="info"
                       hit
               >申请售后
+              </el-tag>
+              <el-tag v-if="scope.row.orderStatus == 9"
+                      type="info"
+                      hit
+              >未评价
+              </el-tag>
+              <el-tag v-if="scope.row.orderStatus == 5"
+                      type="warning"
+                      hit
+              >交易关闭
               </el-tag>
             </template>
           </el-table-column>

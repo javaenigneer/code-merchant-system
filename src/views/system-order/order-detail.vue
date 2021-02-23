@@ -1,11 +1,18 @@
 <template>
   <div class="app-container">
-    <el-steps :active="orderStatus" finish-status="success" simple style="margin-top: 20px">
-      <el-step title="提交订单"></el-step>
-      <el-step title="支付订单"></el-step>
-      <el-step title="平台发货"></el-step>
-      <el-step title="确认收货"></el-step>
-      <el-step title="完成评价"></el-step>
+    <el-steps :active="orderStatus" finish-status="success"  style="margin-top: 20px" v-show="orderCompletedDisable">
+      <el-step title="提交订单" :description="orderTime.createTime"></el-step>
+      <el-step title="支付订单" :description="orderTime.payTime"></el-step>
+      <el-step title="平台发货" :description="orderTime.consignTime"></el-step>
+      <el-step title="确认收货" :description="orderTime.closeTime"></el-step>
+      <el-step title="完成评价" :description="orderTime.evaluationTime"></el-step>
+    </el-steps>
+    <el-steps :active="orderStatus" finish-status="success"  style="margin-top: 20px" v-show="orderAfterSaleDisable">
+      <el-step title="提交订单" :description="orderTime.createTime"></el-step>
+      <el-step title="支付订单" :description="orderTime.payTime"></el-step>
+      <el-step title="申请售后" :description="orderTime.orderReturnApplyTime"></el-step>
+      <el-step title="确认售后" :description="orderTime.orderReturnHandleTime"></el-step>
+      <el-step title="订单完成"></el-step>
     </el-steps>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
@@ -163,6 +170,8 @@
         }],
         value: '',
         centerDialogVisible: false,
+        orderCompletedDisable: false,
+        orderAfterSaleDisable: false,
         active: false,
         dialogVisible: false,
         list: [],
@@ -183,6 +192,16 @@
         orderBasic: [],
         receiver: [],
         productDetail: [],
+        orderTime:{
+          createTime: '',
+          payTime: '',
+          consignTime: '',
+          endTime: '',
+          closeTime: '',
+          evaluationTime: '',
+          orderReturnApplyTime: '',
+          orderReturnHandleTime: ''
+        },
         orderStatus: ''
       }
     },
@@ -195,7 +214,24 @@
         getOrderInfoById(this.$route.query.orderDetailId).then((response) => {
           if (response.code === 20000) {
             let orderDetail = response.data
-            this.orderStatus = orderDetail.orderStatus
+            // 订单完成评价
+            if (orderDetail.orderStatus !== 8){
+              // 设置步骤条为5
+              this.orderCompletedDisable = true
+              this.orderStatus = 5
+              // 订单售后
+            }else if (orderDetail.orderStatus === 8) {
+              this.orderAfterSaleDisable = true
+              this.orderStatus = orderDetail.orderStatus
+            }
+            this.orderTime.createTime = orderDetail.createTime
+            this.orderTime.payTime = orderDetail.payTime
+            this.orderTime.consignTime = orderDetail.consignTime
+            this.orderTime.endTime = orderDetail.endTime
+            this.orderTime.closeTime = orderDetail.closeTime
+            this.orderTime.evaluationTime = orderDetail.evaluationTime
+            this.orderTime.orderReturnApplyTime = orderDetail.orderReturnApplyTime
+            this.orderTime.orderReturnHandleTime = orderDetail.orderReturnHandleTime
             let orderBasicParam = {}
             orderBasicParam.orderDetailId = orderDetail.orderDetailId
             orderBasicParam.buyerName = orderDetail.buyerName
@@ -228,6 +264,8 @@
             return '已完成'
           case 5:
             return '已关闭'
+          case 8:
+            return "申请售后"
         }
       }
     }
