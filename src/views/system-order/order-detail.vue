@@ -35,6 +35,9 @@
           <el-table-column
             prop="orderStatus"
             label="状态">
+            <template slot-scope="scope">
+              <el-tag size="medium">{{scope.row.orderStatus}}</el-tag>
+            </template>
           </el-table-column>
           <el-table-column
             prop="orderDeliveryCompany"
@@ -214,15 +217,32 @@
         getOrderInfoById(this.$route.query.orderDetailId).then((response) => {
           if (response.code === 20000) {
             let orderDetail = response.data
+            let orderBasicParam = {}
             // 订单完成评价
-            if (orderDetail.orderStatus !== 8){
+            if (orderDetail.orderStatus !== 8 && orderDetail.orderStatus !== 5 && orderDetail.orderStatus !== 9){
               // 设置步骤条为5
               this.orderCompletedDisable = true
+              orderBasicParam.orderStatus = this.checkOrderStatus(orderDetail.orderStatus)
               this.orderStatus = 5
               // 订单售后
             }else if (orderDetail.orderStatus === 8) {
               this.orderAfterSaleDisable = true
               this.orderStatus = orderDetail.orderStatus
+              orderBasicParam.orderStatus = this.checkOrderReturnStatus(orderDetail.orderReturnStatus)
+            }
+            // 订单交易关闭
+            else if (orderDetail.orderStatus !== 8 && orderDetail.orderStatus === 5){
+              // 设置步骤条为5
+              this.orderCompletedDisable = true
+              orderBasicParam.orderStatus = this.checkOrderStatus(orderDetail.orderStatus)
+              this.orderStatus = 2
+            }
+            // 订单未完成评价
+            else if (orderDetail.orderStatus === 9){
+              // 设置步骤条为5
+              this.orderCompletedDisable = true
+              orderBasicParam.orderStatus = this.checkOrderStatus(orderDetail.orderStatus)
+              this.orderStatus = 4
             }
             this.orderTime.createTime = orderDetail.createTime
             this.orderTime.payTime = orderDetail.payTime
@@ -232,10 +252,10 @@
             this.orderTime.evaluationTime = orderDetail.evaluationTime
             this.orderTime.orderReturnApplyTime = orderDetail.orderReturnApplyTime
             this.orderTime.orderReturnHandleTime = orderDetail.orderReturnHandleTime
-            let orderBasicParam = {}
+
             orderBasicParam.orderDetailId = orderDetail.orderDetailId
             orderBasicParam.buyerName = orderDetail.buyerName
-            orderBasicParam.orderStatus = this.checkOrderStatus(orderDetail.orderStatus)
+
             orderBasicParam.orderDeliveryCompany = orderDetail.orderDeliveryCompany
             orderBasicParam.orderDeliveryNumber = orderDetail.orderDeliveryNumber
             this.orderBasic.push(orderBasicParam)
@@ -266,6 +286,26 @@
             return '已关闭'
           case 8:
             return "申请售后"
+          case 9:
+            return "未评价"
+        }
+      },
+      checkOrderReturnStatus(orderReturnStatus){
+        switch (orderReturnStatus) {
+          case 0:
+            return '待处理'
+          case 1:
+            return '退款中'
+          case 2:
+            return '退款成功'
+          case 3:
+            return '退货中'
+          case 4:
+            return '退货成功'
+          case 5:
+            return "拒绝退款"
+          case 6:
+            return "拒绝退货"
         }
       }
     }
