@@ -31,6 +31,12 @@
             <el-option label="禁用" value="0"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="位置" prop="position">
+          <el-select v-model="carouse.position" placeholder="请选择位置">
+            <el-option label="App首页" value="1"></el-option>
+            <el-option label="店铺" value="2"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="图片" prop="image">
           <el-upload
             action="http://localhost:8888/codeworld-upload/upload-image"
@@ -66,12 +72,14 @@
           status: '',
           startTime: '',
           endTime: '',
-          image: undefined
+          image: undefined,
+          position: ''
         },
         imageUrl: undefined,
         rules: {
           title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
           status: [{ required: true, message: '请选择状态', trigger: 'blur' }],
+          position: [{ required: true, message: '请选择位置', trigger: 'blur' }],
           image: [{ required: true, message: '请上传图片', trigger: 'blur' }],
           startTime: [{ required: true, message: '请选择开始时间', trigger: 'blur' }],
           endTime: [{ required: true, message: '请选择结束时间', trigger: 'blur' }]

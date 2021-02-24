@@ -75,6 +75,25 @@
               </el-tag>
             </template>
           </el-table-column>
+          <el-table-column label="审核状态" prop="reviewStatus" align="center">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.reviewStatus == 0"
+                      type="info"
+                      hit
+              >未审核
+              </el-tag>
+              <el-tag v-if="scope.row.reviewStatus == 1"
+                      type="success"
+                      hit
+              >审核通过
+              </el-tag>
+              <el-tag v-if="scope.row.reviewStatus == -1"
+                      type="danger"
+                      hit
+              >未通过
+              </el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             v-if="this.global_checkBtnPermission(['order:view','order:delivery'])"
