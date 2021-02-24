@@ -119,7 +119,7 @@
       </div>
       <el-form>
         <el-form-item label="备注信息" prop="desc">
-          <el-input type="textarea" v-model="input1"></el-input>
+          <el-input type="textarea" v-model="serviceOrder.orderReturnRemark"></el-input>
         </el-form-item>
         <el-form-item style="margin-left: 500px" v-if="orderReturnStatus == 0">
           <el-button type="primary" @click="receiveProcess()">确认</el-button>
@@ -173,6 +173,7 @@
         orderReturnStatus: '',
         input1: '',
         input2: '',
+        remark: "",
         serviceOrder: {
           orderReturnId: '',
           orderReturnStatus: '',
@@ -181,7 +182,8 @@
           buyerName: '',
           receiverName: '',
           receiverPhone: '',
-          receiverAddress: ''
+          receiverAddress: '',
+          orderReturnRemark: ''
         }
       }
     },
@@ -203,6 +205,7 @@
             this.serviceOrder.receiverName = orderReturnDetail.receiverName
             this.serviceOrder.receiverPhone = orderReturnDetail.receiverPhone
             this.serviceOrder.receiverAddress = orderReturnDetail.receiverAddress
+            this.serviceOrder.orderReturnRemark = orderReturnDetail.orderReturnRemark
             this.orderReturnStatus = orderReturnDetail.orderReturnStatus
           } else {
             this.submitFail(response.msg)
@@ -226,7 +229,10 @@
         }
       },
       receiveProcess() {
-        receiveProcess(this.serviceOrder.orderReturnId).then((response => {
+        let orderProcessRequest = {}
+        orderProcessRequest.orderReturnId = this.serviceOrder.orderReturnId
+        orderProcessRequest.remark = this.serviceOrder.orderReturnRemark
+        receiveProcess(orderProcessRequest).then((response => {
           if (response.code === 20000) {
             this.submitOk(response.msg)
           } else {

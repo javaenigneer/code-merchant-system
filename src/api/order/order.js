@@ -51,19 +51,19 @@ export function getOrderReturnInfo(orderReturnId) {
 }
 
 
-export function receiveProcess(orderReturnId) {
+export function receiveProcess(orderProcessRequest) {
   return request({
     url: '/codeworld-order/web/receive-processing-service-order',
     method: 'post',
-    params: {orderReturnId}
+    data: orderProcessRequest
   });
 }
 
-export function refuseProcess(orderReturnId) {
+export function refuseProcess(orderProcessRequest) {
   return request({
     url: '/codeworld-order/web/refuse-process-service-order',
     method: 'post',
-    params: {orderReturnId}
+    data: orderProcessRequest
   });
 }
 
