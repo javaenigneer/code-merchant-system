@@ -70,8 +70,9 @@
               >已启用
               </el-tag>
               <el-tag v-if="scope.row.status == 0"
+                      type="warning"
                       hit
-              >未启用
+              >已过期
               </el-tag>
             </template>
           </el-table-column>
@@ -96,26 +97,11 @@
           </el-table-column>
           <el-table-column
             align="center"
-            v-if="this.global_checkBtnPermission(['order:view','order:delivery'])"
+            v-if="this.global_checkBtnPermission(['delete:carouse'])"
             :label="$t('table.actions')"
           >
-            <template slot-scope="scope">
-              <el-button
-                v-if="scope.row.status != 1"
-                size="mini"
-                type="success"
-                @click="handleModifyStatus(scope.row,1)"
-              >{{ $t('table.enable') }}
-              </el-button>
-              <el-button
-                v-if="scope.row.status == 0"
-                v-has="'order:delivery'"
-                size="mini"
-                type="success"
-                @click="handleModifyStatus(scope.row,0)"
-              >{{ $t('table.disable') }}
-              </el-button>
-              <cus-del-btn v-has="'order:delete'" @ok="handleDelete(scope.row)"/>
+            <template slot-scope="scope">>
+              <cus-del-btn v-has="'delete:carouse'" @ok="deleteCarouse(scope.row)"/>
             </template>
           </el-table-column>
         </el-table>
@@ -135,7 +121,8 @@
 <script>
   import {
     getPageCarouse,
-    updateCarouseStatus
+    updateCarouseStatus,
+    deleteCarouse
   } from '@/api/marketing/carouse'
 
   export default {
@@ -211,13 +198,25 @@
         carouse.id = row.id
         carouse.status = status
         updateCarouseStatus(carouse).then((response) => {
-          if (response.code == 20000) {
+          if (response.code === 20000) {
             this.submitOk(response.msg)
             row.saleAble = status
           } else {
             this.submitFail(response.msg)
           }
         })
+      },
+      deleteCarouse(row){
+        deleteCarouse(row.id).then((response => {
+          if (response.code === 20000){
+            if (response.code === 20000) {
+              this.submitOk(response.msg)
+              this.getList()
+            } else {
+              this.submitFail(response.msg)
+            }
+          }
+        }))
       },
       // 监听dialog关闭时的处理事件
       handleDialogClose() {
