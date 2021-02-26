@@ -6,10 +6,25 @@
           v-model="listQuery.status"
           class="filter-item"
           placeholder="状态"
+          clearable
           style="width: 150px;"
         >
           <el-option
             v-for="item in flagList"
+            :key="item.key"
+            :label="item.display_name"
+            :value="item.key"
+          ></el-option>
+        </el-select>
+        <el-select
+          v-model="listQuery.reviewStatus"
+          class="filter-item"
+          placeholder="审核状态"
+          clearable
+          style="width: 150px;"
+        >
+          <el-option
+            v-for="item in reviewList"
             :key="item.key"
             :label="item.display_name"
             :value="item.key"
@@ -53,7 +68,7 @@
         >
           <el-table-column fixed label="ID" prop="id" align="center"></el-table-column>
           <el-table-column label="标题" prop="title" align="center"></el-table-column>
-          <el-table-column label="图片"  align="center">
+          <el-table-column label="图片" align="center">
             <template slot-scope="scope">
               <el-image
                 style="width: 50px; height: 50px"
@@ -132,8 +147,14 @@
         dialogVisible: false,
         list: [],
         flagList: [
-          { key: 0, display_name: '未启用' },
-          { key: 1, display_name: '已启用' }
+          { key: 1, display_name: '已启用' },
+          { key: 2, display_name: '未启用' },
+          { key: 0, display_name: '已过期' }
+        ],
+        reviewList: [
+          { key: 0, display_name: '未审核' },
+          { key: 1, display_name: '审核通过' },
+          { key: -1, display_name: '未通过' }
         ],
         listLoading: true,
         total: 0,
@@ -141,6 +162,7 @@
           page: 1,
           limit: 10,
           status: undefined,
+          reviewStatus: undefined,
           startTime: undefined,
           endTime: undefined
         },
@@ -187,14 +209,16 @@
             this.listLoading = false
           } else {
             this.listLoading = false
+            this.list = []
+            this.total = 0
           }
         })
       },
-      handleCreate(){
-        this.$router.push({path:'/systemMarketing/add-carouse'})
+      handleCreate() {
+        this.$router.push({ path: '/systemMarketing/add-carouse' })
       },
       handleModifyStatus: function(row, status) {
-        let carouse  = {}
+        let carouse = {}
         carouse.id = row.id
         carouse.status = status
         updateCarouseStatus(carouse).then((response) => {
@@ -206,9 +230,9 @@
           }
         })
       },
-      deleteCarouse(row){
+      deleteCarouse(row) {
         deleteCarouse(row.id).then((response => {
-          if (response.code === 20000){
+          if (response.code === 20000) {
             if (response.code === 20000) {
               this.submitOk(response.msg)
               this.getList()
