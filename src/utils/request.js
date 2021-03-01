@@ -29,8 +29,7 @@ service.interceptors.request.use(
   },
   error => {
     // Do something with request error
-    console.log(error) // for debug
-    Promise.reject(error)
+    // Promise.reject(error)
   }
 )
 
@@ -81,15 +80,6 @@ service.interceptors.response.use(
       })
       return Promise.reject('error')
     }
-    // 数据为空
-    if (res.code === 20004) {
-      Message({
-        message: res.msg,
-        type: 'warning',
-        duration: 5 * 1000
-      })
-      return response.data
-    }
     // 验证错误
     if (res.code === 20002) {
       MessageBox.confirm('你已被登出，是否重新登录？', '提示', {
@@ -117,12 +107,11 @@ service.interceptors.response.use(
       })
     }
     // 请求成功
-    else if(res.code === 20000) {
+    else if(res.code === 20000 || res.code === 20004) {
       return response.data
     }
   },
   error => {
-    console.log('err' + error) // for debug
     Message({
       message: error.message,
       type: 'error',

@@ -405,23 +405,6 @@
           }
         })
       },
-      // submitForm() {
-      //   this.$refs.dataForm.validate(valid => {
-      //     if (valid) {
-      //       saveSysUser(this.form).then(response => {
-      //         if (response.code == 200) {
-      //           this.getList()
-      //           this.submitOk(response.message)
-      //           this.dialogVisible = false
-      //         } else {
-      //           this.submitFail(response.message)
-      //         }
-      //       }).catch(err => {
-      //         console.log(err)
-      //       })
-      //     }
-      //   })
-      // },
       resetForm() {
         this.form = {
           id: undefined, //主键ID

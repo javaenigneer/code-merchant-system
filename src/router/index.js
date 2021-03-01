@@ -70,6 +70,12 @@ export const constantRoutes = [
         meta: { title: '个人信息', icon: 'user', noCache: true}
       },
       {
+        path: 'password',
+        component: () => import('@/views/dashboard/myDashboard/password'),
+        name: 'password',
+        meta: { title: '修改密码', icon: 'password', noCache: true}
+      },
+      {
         path: 'set-merchant',
         component: () => import('@/views/dashboard/set-merchant'),
         name: '商户入驻',

@@ -75,23 +75,6 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-        <el-form-item label="商户跟进人">
-          <el-select
-            v-model="merchantInfo.followerId"
-            filterable
-            remote
-            reserve-keyword
-            placeholder="请输入关键词"
-            :remote-method="remoteMethod"
-            :loading="loading">
-            <el-option
-              v-for="item in options"
-              :key="item.userId"
-              :label="item.userName"
-              :value="item.userId">
-            </el-option>
-          </el-select>
-        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
     <el-button @click="merchantInfoDialogVisible = false">取 消</el-button>
@@ -172,20 +155,6 @@
       },
       editMerchantInfoView() {
         this.merchantInfoDialogVisible = true
-      },
-      remoteMethod(query) {
-        if (query !== '') {
-          this.loading = true
-          getUserRoleToMerchant(query).then((response => {
-            if (response.code === 20000) {
-              this.loading = false
-              let result = response.data
-              this.options = result
-            } else {
-              this.options = []
-            }
-          }))
-        }
       },
       handleSuccess(response, file, fileList) {
         if (response.code === 20000) {

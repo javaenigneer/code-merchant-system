@@ -55,11 +55,12 @@
               个人信息
             </el-dropdown-item>
           </router-link>
-          <!--<a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">-->
-          <!--<el-dropdown-item>-->
-          <!--{{ $t('navbar.github') }}-->
-          <!--</el-dropdown-item>-->
-          <!--</a>-->
+          <router-link to="/my/password">
+            <el-dropdown-item style="font-size: 16px">
+              <svg-icon icon-class="password" style="margin-right: 8px" />
+              修改密码
+            </el-dropdown-item>
+          </router-link>
           <el-dropdown-item divided>
             <span style="display:block;font-size: 16px" @click="logout">
               <svg-icon icon-class="logout" style="margin-right: 8px" />
@@ -110,7 +111,7 @@ export default {
     logout() {
       this.$store.dispatch('LogOut').then(() => {
         this.$router.push({path: '/dashboard'});
-        location.reload()// In order to re-instantiate the vue-router object to avoid bugs
+        location.reload()
       })
     }
   }
