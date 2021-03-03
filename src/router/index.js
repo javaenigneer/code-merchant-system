@@ -12,6 +12,7 @@ import systemGoods from './modules/system-goods';
 import systemMerchant from './modules/system-merchant'
 import systemOrder from './modules/system-order'
 import systemMarketing from './modules/system-marketing'
+import systemStore from './modules/system-store'
 
 
 
@@ -387,5 +388,6 @@ export const asyncRoutes = [
   systemMerchant,
   systemOrder,
   systemMarketing,
+  systemStore,
   { path: '*', redirect: '/404', hidden: true }
 ]
