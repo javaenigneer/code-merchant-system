@@ -33,6 +33,7 @@
           :picker-options="pickerOptions">
         </el-date-picker>
         <el-button type="primary" @click="getList" icon="el-icon-search">查询</el-button>
+        <el-button type="primary" @click="newAddStore" icon="el-icon-circle-plus-outline">新建店铺</el-button>
       </cus-filter-wraper>
       <div class="table-container">
         <el-table
@@ -250,42 +251,8 @@
           this.$refs['dataForm'].clearValidate() // 清除整个表单的校验
         }
       },
-      viewOrder(row) {
-        this.$router.push({ path: '/systemOrder/order-detail', query: { orderDetailId: row.orderDetailId } })
-      },
-      // 订单发货列表
-      orderDeliveryPage(row) {
-        // 根据地址id查询地址信息
-        getReceiverAddressById(row.addressId).then((response) => {
-          if (response.code === 20000) {
-            this.orderDeliveryList.orderDetailId = row.orderDetailId
-            this.orderDeliveryList.receiverName = response.data.name
-            this.orderDeliveryList.receiverPhone = response.data.phone
-            this.orderDeliveryList.receiverAddress = response.data.area + response.data.detailed + response.data.houseNumber
-            this.dialogVisible = true
-          } else {
-            this.submitFail(response.msg)
-          }
-        })
-      },
-      // 订单发货
-      orderDelivery() {
-        let orderDeliveryMessage = {}
-        orderDeliveryMessage.orderDetailId = this.orderDeliveryList.orderDetailId
-        orderDeliveryMessage.logisticsCompany = this.orderDeliveryList.logisticsCompany
-        orderDelivery(orderDeliveryMessage).then((response) => {
-          if (response.code === 20000){
-            this.getList();
-            this.submitOk(response.msg);
-            this.dialogVisible = false
-          }else {
-            this.submitFail(response.msg)
-          }
-        })
-      },
-      exportOrder(){
-        exportOrder().then((response => {
-        }))
+      newAddStore() {
+        this.$router.push({ path: '/systemStore/new-add-store'})
       },
       handleClose(done) {
         this.$confirm('确认关闭？')

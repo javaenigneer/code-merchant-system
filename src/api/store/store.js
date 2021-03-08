@@ -8,3 +8,12 @@ export function getMerchantStorePage(query) {
     data: query
   });
 }
+
+// 创建店铺
+export function createStore(form) {
+  return request({
+    url: '/codeworld-store/web/create-store',
+    method: 'post',
+    data: form
+  });
+}

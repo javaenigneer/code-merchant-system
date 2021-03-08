@@ -19,6 +19,13 @@ const systemStore = {
       component: () => import('@/views/system-store/store'),
       name: '店铺列表',
       meta: { title: '店铺列表', icon: 'my-user', noCache: true, resources: 'user' }
+    },
+    {
+      path: 'new-add-store',
+      component: () => import('@/views/system-store/new-add-store'),
+      name: '新建店铺',
+      meta: { title: '新建店铺', icon: 'my-user', noCache: true, resources: 'user' },
+      hidden: true
     }
   ]
 };
