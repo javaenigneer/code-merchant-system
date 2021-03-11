@@ -35,3 +35,12 @@ export function getStoreCategoryByStoreId(storeId) {
     params: { storeId }
   });
 }
+
+// 添加店铺分类
+export function addStoreCategory(form) {
+  return request({
+    url: '/codeworld-store/web/add-store-category',
+    method: 'post',
+    data: form
+  });
+}
