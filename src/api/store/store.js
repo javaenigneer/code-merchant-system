@@ -44,3 +44,11 @@ export function addStoreCategory(form) {
     data: form
   });
 }
+// 修改店铺分类
+export function editStoreCategory(form) {
+  return request({
+    url: '/codeworld-store/web/edit-store-category',
+    method: 'post',
+    data: form
+  });
+}

@@ -75,7 +75,7 @@
               width="100">
               <template slot-scope="scope">
                 <el-button @click="addStoreCategoryView(scope.row)" type="text" size="small">添加</el-button>
-                <el-button type="text" size="small">编辑</el-button>
+                <el-button @click="editStoreCategoryView(scope.row)" type="text" size="small">编辑</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -91,6 +91,24 @@
         <el-form-item label="上级分类名称" prop="parentName">
           <el-input v-model="form.parentName" disabled></el-input>
         </el-form-item>
+        <el-form-item label="分类名">
+          <el-input v-model="form.name" placeholder="请输入分类名"></el-input>
+        </el-form-item>
+        <el-form-item label="排序">
+          <el-input v-model="form.sortNo" type="number" placeholder="请输入排序" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">立即创建</el-button>
+          <el-button @click="dialogVisible = false">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+    <el-dialog
+      title="修改分类"
+      :visible.sync="editDialogVisible"
+      width="60%"
+      :before-close="handleClose">
+      <el-form ref="form" :model="form" label-width="100px" style="width: 500px">
         <el-form-item label="分类名" prop="name">
           <el-input v-model="form.name" placeholder="请输入分类名"></el-input>
         </el-form-item>
@@ -98,8 +116,8 @@
           <el-input v-model="form.sortNo" type="number" placeholder="请输入排序" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">立即创建</el-button>
-          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="onSubmitEdit">立即修改</el-button>
+          <el-button @click="editDialogVisible = false">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -110,7 +128,8 @@
   import {
     getStoreByName,
     getStoreCategoryByStoreId,
-    addStoreCategory
+    addStoreCategory,
+    editStoreCategory
   } from '@/api/store/store'
 
   export default {
@@ -123,12 +142,14 @@
         loading: false,
         tableData: [],
         dialogVisible: false,
+        editDialogVisible: false,
         form: {
           parentName: '',
           parentId: '',
           name: '',
           sortNo: '',
-          storeId: ''
+          storeId: '',
+          id: ''
         },
         resetForm:{
           parentName: '',
@@ -180,12 +201,29 @@
         }
         this.dialogVisible = true
       },
+      editStoreCategoryView(row){
+        this.form.id = row.id
+        this.form.name = row.name
+        this.form.sortNo = row.sortNo
+        this.editDialogVisible = true
+      },
       // 添加分类
       onSubmit(){
         addStoreCategory(this.form).then((response => {
           if (response.code === 20000){
             this.submitOk(response.msg)
             this.dialogVisible =false
+            this.getStoreCategoryByStoreId();
+          }else {
+            this.submitFail(response.msg)
+          }
+        }))
+      },
+      onSubmitEdit(){
+        editStoreCategory(this.form).then((response => {
+          if (response.code === 20000){
+            this.submitOk(response.msg)
+            this.editDialogVisible =false
             this.getStoreCategoryByStoreId();
           }else {
             this.submitFail(response.msg)
