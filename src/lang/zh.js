@@ -147,7 +147,8 @@ export default {
     examine: '审核',
     viewOrder:'查看订单',
     orderDelivery:'订单发货',
-    seeDetails: '查看详情'
+    seeDetails: '查看详情',
+    setStoreView: '店铺设置'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',

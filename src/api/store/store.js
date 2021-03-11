@@ -17,3 +17,21 @@ export function createStore(form) {
     data: form
   });
 }
+
+// 根据店铺名称模糊查询店铺
+export function getStoreByName(name) {
+  return request({
+    url: '/codeworld-store/web/get-store-name',
+    method: 'post',
+    params: { name }
+  });
+}
+
+// 根据店铺id查询店铺分类
+export function getStoreCategoryByStoreId(storeId) {
+  return request({
+    url: '/codeworld-store/web/get-store-category-store-id',
+    method: 'post',
+    params: { storeId }
+  });
+}

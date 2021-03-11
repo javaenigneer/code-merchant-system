@@ -72,11 +72,10 @@
           >
             <template slot-scope="scope">
               <el-button
-                v-if="scope.row.orderStatus != 1"
                 size="mini"
                 type="success"
-                @click="viewOrder(scope.row)"
-              >{{ $t('table.viewOrder') }}
+                @click="setStoreView(scope.row)"
+              >{{ $t('table.setStoreView') }}
               </el-button>
               <el-button
                 v-if="scope.row.orderStatus == 2"
@@ -252,7 +251,10 @@
         }
       },
       newAddStore() {
-        this.$router.push({ path: '/systemStore/new-add-store'})
+        this.$router.push({ path: '/systemStore/new-add-store' })
+      },
+      setStoreView(row) {
+        this.$router.push({ path: '/systemStore/set-store',query:{storeId: row.id}})
       },
       handleClose(done) {
         this.$confirm('确认关闭？')
