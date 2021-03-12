@@ -131,6 +131,9 @@
     importGoods
   } from '@/api/goods/product'
   import { treeDept } from '@/api/system/dept';
+  import {
+    checkMerchantHasStore
+  } from '@/api/merchant/merchant'
   // 导入自定义的表单组件
   import addProduct from './add-product';
   export default {
@@ -240,7 +243,15 @@
       },
 
       handleCreate() {
-       this.addProductVisible = true
+        // 先判断该商户是否有门店信息
+        checkMerchantHasStore().then((response => {
+          if (response.code === 20000 && response.data === true){
+            this.addProductVisible = true
+          }else {
+            this.addProductVisible = false
+            this.submitFail(response.msg)
+          }
+        }))
       },
       handleModifyStatus: function(row, status) {
         updateProductStatus(row.id, status).then((response) => {

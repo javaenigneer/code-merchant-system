@@ -25,6 +25,14 @@ export function updateMerchantInfo(editMerchantInfo) {
   });
 }
 
+// 判断商户是否有门店
+export function checkMerchantHasStore() {
+  return request({
+    url: '/codeworld-merchant/check-merchant-has-store',
+    method: 'post',
+  });
+}
+
 
 
 
