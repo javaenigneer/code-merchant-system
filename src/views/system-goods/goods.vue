@@ -117,7 +117,7 @@
           @pagination="getList"
         />
       </div>
-      <el-dialog :visible.sync="addProductVisible" append-to-body>
+      <el-dialog :visible.sync="addProductVisible" append-to-body  :before-close="handleClose">
         <add-product v-if="addProductVisible" ref="addProduct" @goods="closeAddProduct"></add-product>
       </el-dialog>
     </cus-wraper>
@@ -312,6 +312,13 @@
             this.submitFail(response.msg)
           }
         })
+      },
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
       }
     }
   }
