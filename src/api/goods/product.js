@@ -41,3 +41,11 @@ export function uploadImage(file) {
     data: file
   });
 }
+
+// 删除商品
+export function deleteGoods(id) {
+  return request({
+    url: '/codeworld-goods/product/delete-goods/' + id,
+    method: 'post'
+  });
+}

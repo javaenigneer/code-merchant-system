@@ -128,7 +128,8 @@
   import {
     getPageProduct,
     updateProductStatus,
-    importGoods
+    importGoods,
+    deleteGoods
   } from '@/api/goods/product'
   import { treeDept } from '@/api/system/dept';
   import {
@@ -264,8 +265,7 @@
         })
       },
       handleDelete(row) {
-        let userId = row.userId
-        deleteSysUser(userId).then((response) => {
+        deleteGoods(row.id).then((response) => {
           if (response.code == 20000) {
             this.getList()
             this.submitOk(response.msg)
