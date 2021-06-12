@@ -43,7 +43,10 @@
       <!--        </el-dialog>-->
       <!--      </el-form-item>-->
       <el-form-item label="商品详情">
-        <el-input type="textarea" v-model="productDetail.desc" prop="desc"></el-input>
+<!--        <el-input type="textarea" v-model="productDetail.desc" prop="desc"></el-input>-->
+        <div>
+          <mavon-editor v-model="value" style="min-height: 600px" @save="saveDoc"/>
+        </div>
       </el-form-item>
       <!--      <el-form-item v-if="active == 1">-->
       <!--        <el-button type="primary" @click="submitForm()">立即创建</el-button>-->
@@ -283,7 +286,7 @@
         rules: {
           title: [
             { required: true, message: '请输入商品标题', trigger: 'blur' },
-            { min: 3, max: 15, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            { min: 3, max: 100, message: '长度在 3 到 100 个字符', trigger: 'blur' }
           ],
           categoryId: [
             { required: true, message: '请选择商品分类', trigger: 'change' }
@@ -314,7 +317,9 @@
           // desc: [{
           //   required: true, message: '请简单介绍商品', trigger: 'change'
           // }]
-        }
+        },
+        value:'',
+        defaultData: 'preview'
       }
     },
     created() {
@@ -344,6 +349,11 @@
           this.active = 0
         }
       },
+      saveDoc(markdown, html){
+        console.log(markdown)
+        console.log(html)
+        this.value = html
+      },
       // 获取分类树
       getCategory() {
         treeCategory().then(response => {
@@ -367,6 +377,7 @@
         return categoryTree
       },
       submitForm() {
+        this.productDetail.desc = this.value
         var result = Object.assign({}, this.form, this.productDetail)
         var param = {}
         var paramObj = JSON.parse(JSON.stringify(this.genericParam.obj))
@@ -397,7 +408,6 @@
         result.specialParam = JSON.stringify(specialParam)
         var sku = JSON.stringify(this.tableData)
         result.sku = sku
-        console.log(result)
         addProduct(result).then(response => {
           if (response.code === 20000) {
             this.submitOk(response.msg)

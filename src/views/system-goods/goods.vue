@@ -41,7 +41,7 @@
         >{{ $t('table.add') }}
         </el-button>
         <el-button
-          v-has="'user:add'"
+          v-has="'goods:import'"
           type="primary"
           @click="importGoods"
           icon="el-icon-plus"
@@ -74,6 +74,25 @@
               </el-tag>
             </template>
           </el-table-column>
+          <el-table-column label="审核状态" prop="approveStatus" align="center">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.approveStatus == 1"
+                      type="success"
+                      hit
+              >审核通过
+              </el-tag>
+              <el-tag v-if="scope.row.approveStatus == 0"
+                      type="danger"
+                      hit
+              >审核未通过
+              </el-tag>
+              <el-tag v-if="scope.row.approveStatus == -1"
+                      type="warning"
+                      hit
+              >未审核
+              </el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             v-if="this.global_checkBtnPermission(['product:add','product:onSale','product:offSale','user:delete','user:enable'])"
@@ -82,14 +101,22 @@
             <template slot-scope="scope">
               <el-button
                 v-has="'product:onSale'"
-                v-if="scope.row.saleAble!=1"
+                v-if="scope.row.approveStatus == 0"
+                size="mini"
+                type="warning"
+                @click="viewExamineResult(scope.row)"
+              >{{ $t('table.examineResult') }}
+              </el-button>
+              <el-button
+                v-has="'product:onSale'"
+                v-if="scope.row.saleAble!=1 && scope.row.approveStatus == 1"
                 size="mini"
                 type="success"
                 @click="handleModifyStatus(scope.row,1)"
               >{{ $t('table.onSale') }}
               </el-button>
               <el-button
-                v-if="scope.row.saleAble!=0"
+                v-if="scope.row.saleAble!=0 && scope.row.approveStatus == 1"
                 v-has="'product:offSale'"
                 size="mini"
                 @click="handleModifyStatus(scope.row,0)"
@@ -117,8 +144,19 @@
           @pagination="getList"
         />
       </div>
-      <el-dialog :visible.sync="addProductVisible" append-to-body  :before-close="handleClose">
+      <el-dialog :visible.sync="addProductVisible" append-to-body :before-close="handleClose" fullscreen="true">
         <add-product v-if="addProductVisible" ref="addProduct" @goods="closeAddProduct"></add-product>
+      </el-dialog>
+      <el-dialog
+        title="提示"
+        :visible.sync="examineResultVisible"
+        width="30%"
+        :before-close="handleClose">
+        <span>{{resultMsg}}</span>
+        <span slot="footer" class="dialog-footer">
+    <el-button @click="examineResultVisible = false">取 消</el-button>
+    <el-button type="primary" @click="examineResultVisible = false">确 定</el-button>
+  </span>
       </el-dialog>
     </cus-wraper>
   </div>
@@ -131,25 +169,28 @@
     importGoods,
     deleteGoods
   } from '@/api/goods/product'
-  import { treeDept } from '@/api/system/dept';
+  import { treeDept } from '@/api/system/dept'
   import {
     checkMerchantHasStore
   } from '@/api/merchant/merchant'
   // 导入自定义的表单组件
-  import addProduct from './add-product';
+  import addProduct from './add-product'
+
   export default {
-    provide(){
-      return{
-        getList:this.getList
+    provide() {
+      return {
+        getList: this.getList
       }
     },
-    components:{
+    components: {
       addProduct
     },
     data() {
       return {
         active: false,
         dialogVisible: false,
+        examineResultVisible: false,
+        resultMsg: "",
         list: [],
         sexList: [
           { key: '0', display_name: '男' },
@@ -226,7 +267,7 @@
         },
         defaultCheckedKeysMenu: [],
         deptIdCheckId: [],
-        addProductVisible:false,
+        addProductVisible: false
       }
     },
     created() {
@@ -246,9 +287,9 @@
       handleCreate() {
         // 先判断该商户是否有门店信息
         checkMerchantHasStore().then((response => {
-          if (response.code === 20000 && response.data === true){
+          if (response.code === 20000 && response.data === true) {
             this.addProductVisible = true
-          }else {
+          } else {
             this.addProductVisible = false
             this.submitFail(response.msg)
           }
@@ -301,24 +342,30 @@
           this.$refs['dataForm'].clearValidate() // 清除整个表单的校验
         }
       },
-      closeAddProduct(){
+      closeAddProduct() {
         this.addProductVisible = false
       },
-      importGoods(){
+      importGoods() {
         importGoods().then(response => {
-          if (response.code === 20000){
+          if (response.code === 20000) {
             this.submitOk(response.msg)
-          }else {
+          } else {
             this.submitFail(response.msg)
           }
         })
       },
+      // 查看审核结果
+      viewExamineResult(row){
+        this.resultMsg = row.approveRemark
+        this.examineResultVisible = true
+      },
       handleClose(done) {
         this.$confirm('确认关闭？')
           .then(_ => {
-            done();
+            done()
           })
-          .catch(_ => {});
+          .catch(_ => {
+          })
       }
     }
   }

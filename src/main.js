@@ -1,7 +1,9 @@
 import Vue from 'vue'
 
 import Cookies from 'js-cookie'
-
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+Vue.use(mavonEditor)
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 import './assets/icon/iconfont.css'
 require ('./assets/icon/iconfont.js')

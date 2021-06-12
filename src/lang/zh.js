@@ -148,7 +148,8 @@ export default {
     viewOrder:'查看订单',
     orderDelivery:'订单发货',
     seeDetails: '查看详情',
-    setStoreView: '店铺设置'
+    setStoreView: '店铺设置',
+    examineResult: '审核结果'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',
